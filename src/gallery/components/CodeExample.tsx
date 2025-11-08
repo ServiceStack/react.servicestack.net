@@ -1,4 +1,4 @@
-import { ReactNode, memo, useMemo } from 'react'
+import { type ReactNode, memo, useMemo } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
