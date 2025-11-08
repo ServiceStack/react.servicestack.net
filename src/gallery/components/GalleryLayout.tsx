@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { DarkModeToggle } from '@servicestack/react'
 
 interface GalleryLayoutProps {
@@ -7,7 +8,8 @@ interface GalleryLayoutProps {
 }
 
 export default function GalleryLayout({ children, title }: GalleryLayoutProps) {
-  const currentPath = window.location.pathname
+  const location = useLocation()
+  const currentPath = location.pathname
 
   const getLinkClass = (href: string) => {
     const isActive = currentPath === href
@@ -25,7 +27,7 @@ export default function GalleryLayout({ children, title }: GalleryLayoutProps) {
         <div className="px-2 sm:px-3 lg:px-6">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
-              <a href="/">
+              <Link to="/">
                 <svg className="w-8 h-8 text-[#61DAFB]" viewBox="-11.5 -10.23174 23 20.46348" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="0" cy="0" r="2.05" fill="currentColor"/>
                   <g stroke="currentColor" strokeWidth="1" fill="none">
@@ -34,10 +36,10 @@ export default function GalleryLayout({ children, title }: GalleryLayoutProps) {
                     <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
                   </g>
                 </svg>
-              </a>
-              <a href="/" className="text-xl font-bold text-gray-900 dark:text-gray-100">
+              </Link>
+              <Link to="/" className="text-xl font-bold text-gray-900 dark:text-gray-100">
                 React Component Gallery
-              </a>
+              </Link>
             </div>
             <DarkModeToggle />
           </div>
@@ -55,9 +57,9 @@ export default function GalleryLayout({ children, title }: GalleryLayoutProps) {
               </h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="/gallery/install" className={getLinkClass('/gallery/install')}>
+                  <Link to="/gallery/install" className={getLinkClass('/gallery/install')}>
                     Installation
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -68,79 +70,79 @@ export default function GalleryLayout({ children, title }: GalleryLayoutProps) {
               </h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="/gallery/autoquerygrid" className={getLinkClass('/gallery/autoquerygrid')}>
+                  <Link to="/gallery/autoquerygrid" className={getLinkClass('/gallery/autoquerygrid')}>
                     AutoQueryGrid
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/datagrid" className={getLinkClass('/gallery/datagrid')}>
+                  <Link to="/gallery/datagrid" className={getLinkClass('/gallery/datagrid')}>
                     DataGrid
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/autoform" className={getLinkClass('/gallery/autoform')}>
+                  <Link to="/gallery/autoform" className={getLinkClass('/gallery/autoform')}>
                     Auto Forms
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/custom-autoforms" className={getLinkClass('/gallery/custom-autoforms')}>
+                  <Link to="/gallery/custom-autoforms" className={getLinkClass('/gallery/custom-autoforms')}>
                     Custom Auto Forms
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/form-inputs" className={getLinkClass('/gallery/form-inputs')}>
+                  <Link to="/gallery/form-inputs" className={getLinkClass('/gallery/form-inputs')}>
                     Form Inputs
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/fileinput" className={getLinkClass('/gallery/fileinput')}>
+                  <Link to="/gallery/fileinput" className={getLinkClass('/gallery/fileinput')}>
                     FileInput
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/taginput" className={getLinkClass('/gallery/taginput')}>
+                  <Link to="/gallery/taginput" className={getLinkClass('/gallery/taginput')}>
                     TagInput
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/combobox" className={getLinkClass('/gallery/combobox')}>
+                  <Link to="/gallery/combobox" className={getLinkClass('/gallery/combobox')}>
                     Combobox
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/autocomplete" className={getLinkClass('/gallery/autocomplete')}>
+                  <Link to="/gallery/autocomplete" className={getLinkClass('/gallery/autocomplete')}>
                     Autocomplete
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/markdown" className={getLinkClass('/gallery/markdown')}>
+                  <Link to="/gallery/markdown" className={getLinkClass('/gallery/markdown')}>
                     Markdown Editor
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/custom-inputs" className={getLinkClass('/gallery/custom-inputs')}>
+                  <Link to="/gallery/custom-inputs" className={getLinkClass('/gallery/custom-inputs')}>
                     Custom Inputs
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/modals" className={getLinkClass('/gallery/modals')}>
+                  <Link to="/gallery/modals" className={getLinkClass('/gallery/modals')}>
                     Modals
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/navigation" className={getLinkClass('/gallery/navigation')}>
+                  <Link to="/gallery/navigation" className={getLinkClass('/gallery/navigation')}>
                     Navigation
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/alerts" className={getLinkClass('/gallery/alerts')}>
+                  <Link to="/gallery/alerts" className={getLinkClass('/gallery/alerts')}>
                     Alerts
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/formats" className={getLinkClass('/gallery/formats')}>
+                  <Link to="/gallery/formats" className={getLinkClass('/gallery/formats')}>
                     Formats
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -151,39 +153,39 @@ export default function GalleryLayout({ children, title }: GalleryLayoutProps) {
               </h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="/gallery/use-metadata" className={getLinkClass('/gallery/use-metadata')}>
+                  <Link to="/gallery/use-metadata" className={getLinkClass('/gallery/use-metadata')}>
                     useMetadata
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/use-client" className={getLinkClass('/gallery/use-client')}>
+                  <Link to="/gallery/use-client" className={getLinkClass('/gallery/use-client')}>
                     useClient
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/use-auth" className={getLinkClass('/gallery/use-auth')}>
+                  <Link to="/gallery/use-auth" className={getLinkClass('/gallery/use-auth')}>
                     useAuth
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/use-formatters" className={getLinkClass('/gallery/use-formatters')}>
+                  <Link to="/gallery/use-formatters" className={getLinkClass('/gallery/use-formatters')}>
                     useFormatters
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/use-files" className={getLinkClass('/gallery/use-files')}>
+                  <Link to="/gallery/use-files" className={getLinkClass('/gallery/use-files')}>
                     useFiles
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/use-utils" className={getLinkClass('/gallery/use-utils')}>
+                  <Link to="/gallery/use-utils" className={getLinkClass('/gallery/use-utils')}>
                     useUtils
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/gallery/use-config" className={getLinkClass('/gallery/use-config')}>
+                  <Link to="/gallery/use-config" className={getLinkClass('/gallery/use-config')}>
                     useConfig
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

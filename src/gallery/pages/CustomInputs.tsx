@@ -1,4 +1,5 @@
 import { useState, useEffect, memo } from 'react'
+import { Link } from 'react-router-dom'
 import GalleryLayout from '../components/GalleryLayout'
 import CodeExample from '../components/CodeExample'
 import CodeBlock from '../components/CodeBlock'
@@ -299,7 +300,7 @@ export default function CustomInputsPage() {
       <div className="prose dark:prose-invert max-w-none">
         <p>
           In addition to all the built-in{' '}
-          <a href="/gallery/form-inputs" className="text-blue-600 dark:text-blue-400 hover:underline">Input Components</a>,
+          <Link to="/gallery/form-inputs" className="text-blue-600 dark:text-blue-400 hover:underline">Input Components</Link>,
           AutoForm components bound to your declarative Request DTOs can also reference your own custom React input components.
         </p>
 
@@ -643,9 +644,9 @@ function PhoneInput(props) {
 
         <h2>See Also</h2>
         <ul>
-          <li><a href="/gallery/form-inputs" className="text-blue-600 dark:text-blue-400 hover:underline">Form Inputs</a> - Built-in input components</li>
-          <li><a href="/gallery/autoform" className="text-blue-600 dark:text-blue-400 hover:underline">Auto Forms</a> - AutoForm components</li>
-          <li><a href="/gallery/custom-autoforms" className="text-blue-600 dark:text-blue-400 hover:underline">Custom Auto Forms</a> - Custom AutoQuery implementations</li>
+          <li><Link to="/gallery/form-inputs" className="text-blue-600 dark:text-blue-400 hover:underline">Form Inputs</Link> - Built-in input components</li>
+          <li><Link to="/gallery/autoform" className="text-blue-600 dark:text-blue-400 hover:underline">Auto Forms</Link> - AutoForm components</li>
+          <li><Link to="/gallery/custom-autoforms" className="text-blue-600 dark:text-blue-400 hover:underline">Custom Auto Forms</Link> - Custom AutoQuery implementations</li>
         </ul>
       </div>
     </GalleryLayout>

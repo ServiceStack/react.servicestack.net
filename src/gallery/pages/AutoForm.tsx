@@ -3,7 +3,6 @@ import GalleryLayout from '../components/GalleryLayout'
 import CodeExample from '../components/CodeExample'
 import CodeBlock from '../components/CodeBlock'
 import { AutoForm, AutoCreateForm, AutoEditForm, HtmlFormat, TextLink } from '@servicestack/react'
-import { GalleryProvider } from '../context'
 import { bookings } from '../data'
 
 function AutoFormContent() {
@@ -216,10 +215,6 @@ public class UpdateBooking : IPatchDb<Booking>, IReturn<IdResponse>
 }
 
 export default function AutoFormPage() {
-  return (
-    <GalleryProvider>
-      <AutoFormContent />
-    </GalleryProvider>
-  )
+  return <AutoFormContent />
 }
 

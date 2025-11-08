@@ -155,11 +155,17 @@ function createBooking(
   }
 }
 
-export const bookings: Booking[] = [
-  createBooking("First Booking!", RoomType.Queen, 10, 100, "employee@email.com", "BOOK10"),
-  createBooking("Booking 2", RoomType.Double, 12, 120, "manager@email.com", "BOOK25"),
-  createBooking("Booking the 3rd", RoomType.Suite, 13, 130, "employee@email.com", "BOOK50"),
-]
+// Function to get fresh bookings data (to avoid mutation issues)
+export function getFreshBookings(): Booking[] {
+  bookingId = 0 // Reset the counter
+  return [
+    createBooking("First Booking!", RoomType.Queen, 10, 100, "employee@email.com", "BOOK10"),
+    createBooking("Booking 2", RoomType.Double, 12, 120, "manager@email.com", "BOOK25"),
+    createBooking("Booking the 3rd", RoomType.Suite, 13, 130, "employee@email.com", "BOOK50"),
+  ]
+}
+
+export const bookings: Booking[] = getFreshBookings()
 
 export const forecasts: Forecast[] = [
   { date: "2018-05-06", temperatureC: 1, summary: "Freezing" },

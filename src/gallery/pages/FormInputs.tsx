@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import GalleryLayout from '../components/GalleryLayout'
 import CodeExample from '../components/CodeExample'
 import CodeBlock from '../components/CodeBlock'
+import ErrorBoundary from '../components/ErrorBoundary'
 import {
   TextInput,
   SelectInput,
@@ -12,11 +13,10 @@ import {
 } from '@servicestack/react'
 import { useMetadata } from '@servicestack/react'
 import { useAuth } from '@servicestack/react'
-import { GalleryProvider } from '../context'
-import { bookings } from '../data'
+import { getFreshBookings } from '../data'
 
 function BookingsForm({ id }: { id: number }) {
-  const { enumOptions } = useMetadata()
+  const { enumOptions, metadataApi } = useMetadata()
   const { hasRole } = useAuth()
   const [request, setRequest] = useState<any>({
     id,
@@ -29,25 +29,84 @@ function BookingsForm({ id }: { id: number }) {
     notes: ''
   })
 
-  const visibleFields = "name,roomType,roomNumber,bookingStartDate,bookingEndDate,cost,notes"
-  const canDelete = hasRole('Manager')
-
   useEffect(() => {
-    // Load booking data
-    const booking = bookings.find(b => b.id === id)
+    // Load booking data - get fresh data to avoid mutation issues
+    const freshBookings = getFreshBookings()
+    const booking = freshBookings.find(b => b.id === id)
     if (booking) {
+      console.log('Booking data:', booking)
+      console.log('bookingStartDate type:', typeof booking.bookingStartDate, booking.bookingStartDate)
+      console.log('bookingEndDate type:', typeof booking.bookingEndDate, booking.bookingEndDate)
+      console.log('bookingStartDate instanceof Date:', booking.bookingStartDate instanceof Date)
+      console.log('bookingStartDate constructor:', booking.bookingStartDate?.constructor?.name)
+
+      // Helper function to convert Date or string to ISO date string
+      const toDateString = (date: any) => {
+        if (!date) return ''
+
+        // If it's already a string, extract date part
+        if (typeof date === 'string') {
+          return date.split('T')[0]
+        }
+
+        // If it's a Date object, convert it
+        if (date instanceof Date && !isNaN(date.getTime())) {
+          return date.toISOString().split('T')[0]
+        }
+
+        // If it's a number (timestamp), convert it
+        if (typeof date === 'number') {
+          return new Date(date).toISOString().split('T')[0]
+        }
+
+        // If it's an object (possibly corrupted Date), return empty
+        if (typeof date === 'object') {
+          console.error('Date is an object but not a valid Date:', date)
+          return ''
+        }
+
+        // Try to create a Date from whatever it is
+        try {
+          const newDate = new Date(date)
+          if (!isNaN(newDate.getTime())) {
+            return newDate.toISOString().split('T')[0]
+          }
+          return ''
+        } catch (e) {
+          console.error('Could not convert date:', date, e)
+          return ''
+        }
+      }
+
       setRequest({
         id: booking.id,
         name: booking.name,
         roomType: booking.roomType,
         roomNumber: booking.roomNumber,
         cost: booking.cost,
-        bookingStartDate: booking.bookingStartDate.toISOString().split('T')[0],
-        bookingEndDate: booking.bookingEndDate?.toISOString().split('T')[0] || '',
+        bookingStartDate: toDateString(booking.bookingStartDate),
+        bookingEndDate: toDateString(booking.bookingEndDate),
         notes: ''
       })
     }
   }, [id])
+
+  // Don't render until metadata is loaded
+  if (!metadataApi) {
+    return <div className="p-4">Loading metadata...</div>
+  }
+
+  // Get enum options safely
+  let roomTypeOptions: any = {}
+  try {
+    roomTypeOptions = enumOptions('RoomType') || {}
+  } catch (e) {
+    console.error('Error getting enum options:', e)
+    return <div className="p-4 text-red-600">Error loading form metadata</div>
+  }
+
+  const visibleFields = "name,roomType,roomNumber,bookingStartDate,bookingEndDate,cost,notes"
+  const canDelete = hasRole('Manager')
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -86,11 +145,11 @@ function BookingsForm({ id }: { id: number }) {
                 />
               </div>
               <div className="col-span-6 sm:col-span-3">
-                <SelectInput 
-                  id="roomType" 
+                <SelectInput
+                  id="roomType"
                   value={request.roomType}
                   onChange={(value) => updateField('roomType', value)}
-                  options={enumOptions('RoomType')}
+                  options={roomTypeOptions}
                 />
               </div>
               <div className="col-span-6 sm:col-span-3">
@@ -261,7 +320,9 @@ function FormInputsContent() {
   </div>
 </form>`}
       >
-        <BookingsForm id={1} />
+        <ErrorBoundary>
+          <BookingsForm id={1} />
+        </ErrorBoundary>
       </CodeExample>
 
       <div className="prose dark:prose-invert max-w-none mt-12">
@@ -307,10 +368,6 @@ const onDelete = async () => {
 }
 
 export default function FormInputsPage() {
-  return (
-    <GalleryProvider>
-      <FormInputsContent />
-    </GalleryProvider>
-  )
+  return <FormInputsContent />
 }
 

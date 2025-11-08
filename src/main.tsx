@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { GalleryProvider } from './gallery/context'
 import Gallery from './gallery'
 import AlertsPage from './gallery/pages/Alerts'
 import DataGridPage from './gallery/pages/DataGrid'
@@ -42,34 +43,36 @@ console.log('HTML classList after:', document.documentElement.classList.toString
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Gallery />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/gallery/autoquerygrid" element={<AutoQueryGridPage />} />
-        <Route path="/gallery/datagrid" element={<DataGridPage />} />
-        <Route path="/gallery/autoform" element={<AutoFormPage />} />
-        <Route path="/gallery/form-inputs" element={<FormInputsPage />} />
-        <Route path="/gallery/fileinput" element={<FileInputPage />} />
-        <Route path="/gallery/taginput" element={<TagInputPage />} />
-        <Route path="/gallery/combobox" element={<ComboboxPage />} />
-        <Route path="/gallery/autocomplete" element={<AutocompletePage />} />
-        <Route path="/gallery/modals" element={<ModalsPage />} />
-        <Route path="/gallery/navigation" element={<NavigationPage />} />
-        <Route path="/gallery/alerts" element={<AlertsPage />} />
-        <Route path="/gallery/formats" element={<FormatsPage />} />
-        <Route path="/gallery/use-metadata" element={<UseMetadataPage />} />
-        <Route path="/gallery/use-client" element={<UseClientPage />} />
-        <Route path="/gallery/use-auth" element={<UseAuthPage />} />
-        <Route path="/gallery/use-formatters" element={<UseFormattersPage />} />
-        <Route path="/gallery/use-files" element={<UseFilesPage />} />
-        <Route path="/gallery/use-utils" element={<UseUtilsPage />} />
-        <Route path="/gallery/use-config" element={<UseConfigPage />} />
-        <Route path="/gallery/install" element={<InstallPage />} />
-        <Route path="/gallery/custom-autoforms" element={<CustomAutoFormsPage />} />
-        <Route path="/gallery/markdown" element={<MarkdownEditorPage />} />
-        <Route path="/gallery/custom-inputs" element={<CustomInputsPage />} />
-      </Routes>
-    </BrowserRouter>
+    <GalleryProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Gallery />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/gallery/autoquerygrid" element={<AutoQueryGridPage />} />
+          <Route path="/gallery/datagrid" element={<DataGridPage />} />
+          <Route path="/gallery/autoform" element={<AutoFormPage />} />
+          <Route path="/gallery/form-inputs" element={<FormInputsPage />} />
+          <Route path="/gallery/fileinput" element={<FileInputPage />} />
+          <Route path="/gallery/taginput" element={<TagInputPage />} />
+          <Route path="/gallery/combobox" element={<ComboboxPage />} />
+          <Route path="/gallery/autocomplete" element={<AutocompletePage />} />
+          <Route path="/gallery/modals" element={<ModalsPage />} />
+          <Route path="/gallery/navigation" element={<NavigationPage />} />
+          <Route path="/gallery/alerts" element={<AlertsPage />} />
+          <Route path="/gallery/formats" element={<FormatsPage />} />
+          <Route path="/gallery/use-metadata" element={<UseMetadataPage />} />
+          <Route path="/gallery/use-client" element={<UseClientPage />} />
+          <Route path="/gallery/use-auth" element={<UseAuthPage />} />
+          <Route path="/gallery/use-formatters" element={<UseFormattersPage />} />
+          <Route path="/gallery/use-files" element={<UseFilesPage />} />
+          <Route path="/gallery/use-utils" element={<UseUtilsPage />} />
+          <Route path="/gallery/use-config" element={<UseConfigPage />} />
+          <Route path="/gallery/install" element={<InstallPage />} />
+          <Route path="/gallery/custom-autoforms" element={<CustomAutoFormsPage />} />
+          <Route path="/gallery/markdown" element={<MarkdownEditorPage />} />
+          <Route path="/gallery/custom-inputs" element={<CustomInputsPage />} />
+        </Routes>
+      </BrowserRouter>
+    </GalleryProvider>
   </React.StrictMode>,
 )
