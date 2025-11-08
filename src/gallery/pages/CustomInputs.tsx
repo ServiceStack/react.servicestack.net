@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import GalleryLayout from '../components/GalleryLayout'
 import CodeExample from '../components/CodeExample'
 import CodeBlock from '../components/CodeBlock'
@@ -8,24 +8,40 @@ import type { InputInfo } from '@servicestack/react'
 
 // Custom Phone Input Component
 function PhoneInput({ id, value, onChange, label, placeholder, help, className, inputClass, labelClass, status }: any) {
+  const [localValue, setLocalValue] = useState(value || '')
+
+  useEffect(() => {
+    setLocalValue(value || '')
+  }, [value])
+
   const formatPhone = (val: string) => {
+    // Remove all non-digits
     const cleaned = val.replace(/\D/g, '')
-    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
-    if (match) {
-      return `(${match[1]}) ${match[2]}-${match[3]}`
+
+    // Limit to 10 digits
+    const limited = cleaned.substring(0, 10)
+
+    // Format progressively as user types
+    if (limited.length <= 3) {
+      return limited
+    } else if (limited.length <= 6) {
+      return `(${limited.slice(0, 3)}) ${limited.slice(3)}`
+    } else {
+      return `(${limited.slice(0, 3)}) ${limited.slice(3, 6)}-${limited.slice(6)}`
     }
-    return val
   }
 
   const handleChange = (newValue: string | number) => {
     const formatted = formatPhone(String(newValue))
+    setLocalValue(formatted)
     onChange?.(formatted)
   }
 
   return (
     <TextInput
+      type="text"
       id={id}
-      value={value}
+      value={localValue}
       onChange={handleChange as any}
       label={label}
       placeholder={placeholder || "(123) 456-7890"}
@@ -59,7 +75,7 @@ function ColorPickerInput({ id, value, onChange, label, help, className, labelCl
           type="text"
           value={value || '#3b82f6'}
           onChange={(e) => onChange?.(e.target.value)}
-          className="flex-1 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="flex-1 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           placeholder="#3b82f6"
         />
       </div>
@@ -105,10 +121,170 @@ function SliderInput({ id, value, onChange, label, help, min = 0, max = 100, ste
   )
 }
 
-export default function CustomInputsPage() {
+// Memoized example components with internal state to prevent page re-renders
+const PhoneInputExample = memo(() => {
   const [phone, setPhone] = useState('')
+
+  return (
+    <CodeExample
+    title="Phone Input with Auto-Formatting"
+    description="A custom input that automatically formats phone numbers as (123) 456-7890"
+    code={`function PhoneInput({ id, value, onChange, ...props }) {
+  const [localValue, setLocalValue] = useState(value || '')
+
+  useEffect(() => {
+    setLocalValue(value || '')
+  }, [value])
+
+  const formatPhone = (val) => {
+    // Remove all non-digits
+    const cleaned = val.replace(/\\D/g, '')
+
+    // Limit to 10 digits
+    const limited = cleaned.substring(0, 10)
+
+    // Format progressively as user types
+    if (limited.length <= 3) {
+      return limited
+    } else if (limited.length <= 6) {
+      return \`(\${limited.slice(0, 3)}) \${limited.slice(3)}\`
+    } else {
+      return \`(\${limited.slice(0, 3)}) \${limited.slice(3, 6)}-\${limited.slice(6)}\`
+    }
+  }
+
+  const handleChange = (newValue) => {
+    const formatted = formatPhone(newValue)
+    setLocalValue(formatted)
+    onChange?.(formatted)
+  }
+
+  return (
+    <TextInput
+      id={id}
+      value={localValue}
+      onChange={handleChange}
+      placeholder="(123) 456-7890"
+      {...props}
+    />
+  )
+}`}
+  >
+    <div className="max-w-md">
+      <PhoneInput
+        id="phone"
+        label="Phone Number"
+        value={phone}
+        onChange={setPhone}
+        help="Enter 10 digits and it will auto-format"
+      />
+      <div className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-sm">
+        <strong>Value:</strong> {phone || '(empty)'}
+      </div>
+    </div>
+  </CodeExample>
+  )
+})
+
+const ColorPickerExample = memo(() => {
   const [color, setColor] = useState('#3b82f6')
+
+  return (
+    <CodeExample
+      title="Color Picker Input"
+      description="A custom input combining a color picker with a text input for hex values"
+      code={`function ColorPickerInput({ id, value, onChange, label, help }) {
+  return (
+    <div>
+      {label && <label htmlFor={id}>{label}</label>}
+      <div className="flex gap-2 items-center">
+        <input
+          type="color"
+          id={id}
+          value={value || '#3b82f6'}
+          onChange={(e) => onChange?.(e.target.value)}
+          className="h-10 w-20 rounded border cursor-pointer"
+        />
+        <input
+          type="text"
+          value={value || '#3b82f6'}
+          onChange={(e) => onChange?.(e.target.value)}
+          className="flex-1 rounded-md border shadow-sm"
+          placeholder="#3b82f6"
+        />
+      </div>
+      {help && <p className="text-sm text-gray-500">{help}</p>}
+    </div>
+  )
+}`}
+    >
+      <div className="max-w-md">
+        <ColorPickerInput
+          id="color"
+          label="Brand Color"
+          value={color}
+          onChange={setColor}
+          help="Pick a color or enter a hex value"
+        />
+        <div className="mt-4 p-4 rounded" style={{ backgroundColor: color }}>
+          <p className="text-white font-medium" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+            Preview: {color}
+          </p>
+        </div>
+      </div>
+    </CodeExample>
+  )
+})
+
+const SliderInputExample = memo(() => {
   const [volume, setVolume] = useState(50)
+
+  return (
+    <CodeExample
+      title="Slider Input"
+      description="A custom range slider input with live value display"
+      code={`function SliderInput({ id, value, onChange, label, help, min = 0, max = 100, step = 1 }) {
+  return (
+    <div>
+      {label && <label htmlFor={id}>{label}</label>}
+      <div className="flex gap-4 items-center">
+        <input
+          type="range"
+          id={id}
+          min={min}
+          max={max}
+          step={step}
+          value={value || min}
+          onChange={(e) => onChange?.(Number(e.target.value))}
+          className="flex-1 h-2 bg-gray-200 rounded-lg cursor-pointer"
+        />
+        <span className="w-12 text-right">{value || min}</span>
+      </div>
+      {help && <p className="text-sm text-gray-500">{help}</p>}
+    </div>
+  )
+}`}
+    >
+      <div className="max-w-md">
+        <SliderInput
+          id="volume"
+          label="Volume"
+          value={volume}
+          onChange={setVolume}
+          min={0}
+          max={100}
+          step={5}
+          help="Adjust the volume level"
+        />
+        <div className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-sm">
+          <strong>Value:</strong> {volume}%
+        </div>
+      </div>
+    </CodeExample>
+  )
+})
+
+export default function CustomInputsPage() {
   const [dynamicModel, setDynamicModel] = useState({ phone: '', color: '#10b981', volume: 75 })
 
   // Register custom components on mount
@@ -134,134 +310,11 @@ export default function CustomInputsPage() {
 
         <h2>Live Examples</h2>
 
-        <CodeExample
-          title="Phone Input with Auto-Formatting"
-          description="A custom input that automatically formats phone numbers as (123) 456-7890"
-          code={`function PhoneInput({ id, value, onChange, ...props }) {
-  const formatPhone = (val) => {
-    const cleaned = val.replace(/\\D/g, '')
-    const match = cleaned.match(/^(\\d{3})(\\d{3})(\\d{4})$/)
-    if (match) {
-      return \`(\${match[1]}) \${match[2]}-\${match[3]}\`
-    }
-    return val
-  }
+        <PhoneInputExample />
 
-  const handleChange = (newValue) => {
-    const formatted = formatPhone(newValue)
-    onChange?.(formatted)
-  }
+        <ColorPickerExample />
 
-  return (
-    <TextInput
-      id={id}
-      value={value}
-      onChange={handleChange}
-      placeholder="(123) 456-7890"
-      {...props}
-    />
-  )
-}`}
-        >
-          <div className="max-w-md">
-            <PhoneInput
-              id="phone"
-              label="Phone Number"
-              value={phone}
-              onChange={setPhone}
-              help="Enter 10 digits and it will auto-format"
-            />
-            <div className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-sm">
-              <strong>Value:</strong> {phone || '(empty)'}
-            </div>
-          </div>
-        </CodeExample>
-
-        <CodeExample
-          title="Color Picker Input"
-          description="A custom input combining a color picker with a text input for hex values"
-          code={`function ColorPickerInput({ id, value, onChange, label, help }) {
-  return (
-    <div>
-      {label && <label htmlFor={id}>{label}</label>}
-      <div className="flex gap-2 items-center">
-        <input
-          type="color"
-          id={id}
-          value={value || '#3b82f6'}
-          onChange={(e) => onChange?.(e.target.value)}
-          className="h-10 w-20 rounded border cursor-pointer"
-        />
-        <input
-          type="text"
-          value={value || '#3b82f6'}
-          onChange={(e) => onChange?.(e.target.value)}
-          className="flex-1 rounded-md border shadow-sm"
-          placeholder="#3b82f6"
-        />
-      </div>
-      {help && <p className="text-sm text-gray-500">{help}</p>}
-    </div>
-  )
-}`}
-        >
-          <div className="max-w-md">
-            <ColorPickerInput
-              id="color"
-              label="Brand Color"
-              value={color}
-              onChange={setColor}
-              help="Pick a color or enter a hex value"
-            />
-            <div className="mt-4 p-4 rounded" style={{ backgroundColor: color }}>
-              <p className="text-white font-medium" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
-                Preview: {color}
-              </p>
-            </div>
-          </div>
-        </CodeExample>
-
-        <CodeExample
-          title="Slider Input"
-          description="A custom range slider input with live value display"
-          code={`function SliderInput({ id, value, onChange, label, help, min = 0, max = 100, step = 1 }) {
-  return (
-    <div>
-      {label && <label htmlFor={id}>{label}</label>}
-      <div className="flex gap-4 items-center">
-        <input
-          type="range"
-          id={id}
-          min={min}
-          max={max}
-          step={step}
-          value={value || min}
-          onChange={(e) => onChange?.(Number(e.target.value))}
-          className="flex-1 h-2 bg-gray-200 rounded-lg cursor-pointer"
-        />
-        <span className="w-12 text-right">{value || min}</span>
-      </div>
-      {help && <p className="text-sm text-gray-500">{help}</p>}
-    </div>
-  )
-}`}
-        >
-          <div className="max-w-md">
-            <SliderInput
-              id="volume"
-              label="Volume"
-              value={volume}
-              onChange={setVolume}
-              min={0}
-              max={100}
-              step={5}
-              help="Adjust the volume level"
-            />
-            <div className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-sm">
-              <strong>Value:</strong> {volume}%
-            </div>
-          </div>
-        </CodeExample>
+        <SliderInputExample />
 
         <CodeExample
           title="Using Registered Components with DynamicInput"
@@ -493,27 +546,43 @@ registerComponents({
         <p>
           You can also extend built-in components to add custom functionality:
         </p>
-        <CodeBlock code={`import { TextInput } from '@servicestack/react'
+        <CodeBlock code={`import { useState, useEffect } from 'react'
+import { TextInput } from '@servicestack/react'
 
 function PhoneInput(props) {
+  const [localValue, setLocalValue] = useState(props.value || '')
+
+  useEffect(() => {
+    setLocalValue(props.value || '')
+  }, [props.value])
+
   const formatPhone = (value) => {
-    // Format as (123) 456-7890
+    // Remove all non-digits
     const cleaned = value.replace(/\\D/g, '')
-    const match = cleaned.match(/^(\\d{3})(\\d{3})(\\d{4})$/)
-    if (match) {
-      return \`(\${match[1]}) \${match[2]}-\${match[3]}\`
+
+    // Limit to 10 digits
+    const limited = cleaned.substring(0, 10)
+
+    // Format progressively as user types
+    if (limited.length <= 3) {
+      return limited
+    } else if (limited.length <= 6) {
+      return \`(\${limited.slice(0, 3)}) \${limited.slice(3)}\`
+    } else {
+      return \`(\${limited.slice(0, 3)}) \${limited.slice(3, 6)}-\${limited.slice(6)}\`
     }
-    return value
   }
 
   const handleChange = (value) => {
     const formatted = formatPhone(value)
+    setLocalValue(formatted)
     props.onChange?.(formatted)
   }
 
   return (
     <TextInput
       {...props}
+      value={localValue}
       onChange={handleChange}
       placeholder="(123) 456-7890"
     />

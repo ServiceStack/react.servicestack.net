@@ -129,8 +129,8 @@ export default function NavigationPage() {
       <CodeExample
         title="Link Buttons"
         description="Using href with Button components will style hyper links to behave like buttons:"
-        code={`<PrimaryButton href="https://react-gallery.servicestack.net/" className="mr-2">
-  React Gallery Template
+        code={`<PrimaryButton href="https://docs.servicestack.net/vue/" className="mr-2">
+  Vue Component Gallery
 </PrimaryButton>
 
 <SecondaryButton href="/gallery">
@@ -138,8 +138,8 @@ export default function NavigationPage() {
 </SecondaryButton>`}
       >
         <div className="space-x-2">
-          <PrimaryButton href="https://react-gallery.servicestack.net/" className="mr-2">
-            React Gallery Template
+          <PrimaryButton href="https://docs.servicestack.net/vue/" className="mr-2">
+            Vue Component Gallery
           </PrimaryButton>
           <SecondaryButton href="/gallery">
             React Component Docs

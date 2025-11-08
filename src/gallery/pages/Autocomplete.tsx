@@ -51,7 +51,7 @@ export default function AutocompletePage() {
             )}
           </Autocomplete>
           <div className="mt-2 flex justify-end">
-            <p>
+            <div>
               <b className="text-gray-500">Single:</b>
               {simple && (
                 <div className="flex">
@@ -59,7 +59,7 @@ export default function AutocompletePage() {
                   <b className="text-lg">{simple.displayName}</b>
                 </div>
               )}
-            </p>
+            </div>
           </div>
         </div>
       </CodeExample>
@@ -102,7 +102,7 @@ export default function AutocompletePage() {
             )}
           </Autocomplete>
           <div className="mt-2 flex justify-end">
-            <p>
+            <div>
               <b className="text-gray-500">Single with Icon:</b>
               {contact && (
                 <div className="flex">
@@ -110,7 +110,7 @@ export default function AutocompletePage() {
                   <b className="text-lg">{contact.displayName}</b>
                 </div>
               )}
-            </p>
+            </div>
           </div>
         </div>
       </CodeExample>
@@ -156,7 +156,7 @@ export default function AutocompletePage() {
           </Autocomplete>
           <div className="mt-2">
             <div className="text-right"><b className="text-gray-500">Multiple with Icon:</b></div>
-            <p>
+            <div>
               {contacts.length > 0 && (
                 <div className="flex flex-wrap">
                   {contacts.map((c: any) => (
@@ -167,7 +167,7 @@ export default function AutocompletePage() {
                   ))}
                 </div>
               )}
-            </p>
+            </div>
           </div>
         </div>
       </CodeExample>

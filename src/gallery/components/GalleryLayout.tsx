@@ -24,8 +24,18 @@ export default function GalleryLayout({ children, title }: GalleryLayoutProps) {
       <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
         <div className="px-2 sm:px-3 lg:px-6">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-8">
-              <a href="/gallery" className="text-xl font-bold text-gray-900 dark:text-gray-100">
+            <div className="flex items-center gap-2">
+              <a href="/">
+                <svg className="w-8 h-8 text-[#61DAFB]" viewBox="-11.5 -10.23174 23 20.46348" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="0" cy="0" r="2.05" fill="currentColor"/>
+                  <g stroke="currentColor" strokeWidth="1" fill="none">
+                    <ellipse rx="11" ry="4.2"/>
+                    <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+                    <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+                  </g>
+                </svg>
+              </a>
+              <a href="/" className="text-xl font-bold text-gray-900 dark:text-gray-100">
                 React Component Gallery
               </a>
             </div>

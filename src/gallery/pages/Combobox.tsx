@@ -18,13 +18,14 @@ function ComboboxContent() {
         </p>
       </div>
 
+
       <CodeExample
         title="Combobox Examples"
         description="Combobox supports different data sources including string arrays, objects, and key-value pairs:"
         code={`<div className="grid grid-cols-12 gap-6">
   <Combobox
     id="Strings"
-    className="col-span-4"
+    className="col-span-12 xl:col-span-3"
     label="Strings"
     value={strings}
     onChange={setStrings}
@@ -32,7 +33,7 @@ function ComboboxContent() {
   />
   <Combobox
     id="Object"
-    className="col-span-4"
+    className="col-span-12 xl:col-span-3"
     label="Object"
     value={objects}
     onChange={setObjects}
@@ -40,7 +41,7 @@ function ComboboxContent() {
   />
   <Combobox
     id="Pairs"
-    className="col-span-4"
+    className="col-span-12 xl:col-span-6"
     value={pairs}
     onChange={setPairs}
     label="Multiple from Pairs"
@@ -54,7 +55,7 @@ function ComboboxContent() {
 </div>`}
       >
         <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-4">
+          <div className="col-span-12 xl:col-span-3">
             <Combobox
               id="Strings"
               label="Strings"
@@ -67,7 +68,7 @@ function ComboboxContent() {
             </div>
           </div>
 
-          <div className="col-span-4">
+          <div className="col-span-12 xl:col-span-3">
             <Combobox
               id="Object"
               label="Object"
@@ -80,7 +81,7 @@ function ComboboxContent() {
             </div>
           </div>
 
-          <div className="col-span-4">
+          <div className="col-span-12 xl:col-span-6">
             <Combobox
               id="Pairs"
               value={pairs}
