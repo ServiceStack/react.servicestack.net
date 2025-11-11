@@ -61,6 +61,11 @@ export default function GalleryLayout({ children, title }: GalleryLayoutProps) {
                     Installation
                   </Link>
                 </li>
+                <li>
+                  <Link to="/gallery/setup" className={getLinkClass('/gallery/setup')}>
+                    Setup Examples
+                  </Link>
+                </li>
               </ul>
             </div>
 

@@ -26,6 +26,7 @@ import InstallPage from './gallery/pages/Install'
 import CustomAutoFormsPage from './gallery/pages/CustomAutoForms'
 import MarkdownEditorPage from './gallery/pages/MarkdownEditor'
 import CustomInputsPage from './gallery/pages/CustomInputs'
+import SetupPage from './gallery/pages/Setup'
 import './index.css'
 
 // Initialize dark mode from localStorage
@@ -71,6 +72,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/gallery/custom-autoforms" element={<CustomAutoFormsPage />} />
           <Route path="/gallery/markdown" element={<MarkdownEditorPage />} />
           <Route path="/gallery/custom-inputs" element={<CustomInputsPage />} />
+        <Route path="/gallery/setup" element={<SetupPage />} />
         </Routes>
       </BrowserRouter>
     </GalleryProvider>
