@@ -1,4 +1,3 @@
-import React from 'react'
 import GalleryLayout from '../components/GalleryLayout'
 import CodeBlock from '../components/CodeBlock'
 
