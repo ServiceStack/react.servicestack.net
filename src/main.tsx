@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { GalleryProvider } from './gallery/context'
+import { trackPageView } from './analytics'
 import Gallery from './gallery'
 import AlertsPage from './gallery/pages/Alerts'
 import DataGridPage from './gallery/pages/DataGrid'
@@ -42,10 +43,22 @@ if (colorScheme === 'dark') {
 
 console.log('HTML classList after:', document.documentElement.classList.toString())
 
+// Analytics component to track page views
+function Analytics() {
+  const location = useLocation()
+
+  useEffect(() => {
+    trackPageView(location.pathname + location.search)
+  }, [location])
+
+  return null
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <GalleryProvider>
       <BrowserRouter>
+        <Analytics />
         <Routes>
           <Route path="/" element={<Gallery />} />
           <Route path="/gallery" element={<Gallery />} />
